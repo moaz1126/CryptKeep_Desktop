@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML Meta Tags -->
+    <title>CryptKeep</title>
+    <meta name="description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="CryptKeep" />
+    <meta itemprop="description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+    <meta itemprop="image" content="https://cryptkeep-web.web.app/img/cover.png" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://cryptkeep-web.web.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CryptKeep" />
+    <meta property="og:description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+    <meta property="og:image" content="https://cryptkeep-web.web.app/img/cover.png" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CryptKeep" />
+    <meta name="twitter:description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+    <meta name="twitter:image" content="https://cryptkeep-web.web.app/img/cover.png" />
+
+    <link rel="icon" type="image/x-icon" href="/img/icon2.png">
+
+    <!-- Meta Tags Generated via https://heymeta.com -->
+
+
+    <link rel="stylesheet" href="fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="css/background.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/desktop.css">
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+    <div class="circle"></div>
+    
+    <nav>
+        <h1><i class="fa-solid fa-key"></i> CryptKeep</h1>
+        <div id="Menus">
+            <a href="#" onclick="uplodeSH()"><i class="fa-solid fa-upload"></i> Upload</a>
+            <a href="#" onclick="DawnJson()"><i class="fa-solid fa-download"></i> Download</a>
+            <a href="#" onclick="settingsSH()"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+        <span id="Dots" onclick="menu()"><i class="fa-solid fa-ellipsis"></i></span>
+    </nav>
+
+    <div id="search">
+        <span id="spanP"><span id="span"></span></span>
+        <input type="search" name="" id="searchInput" placeholder="Search or App Name">
+        <div>
+            <button onclick="add()"><i class="fa-solid fa-plus"></i></button>
+            <button onclick="search()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <input type="text" name="" id="UsernameInput" placeholder="Your Username">
+        <input type="text" name="" id="PasswordInput" placeholder="Your Password">
+        <input type="number" value="8" name="" id="PasswordLength">
+        <Button id="Random" onclick="RandomPassword()">Random Password</Button>
+    </div>
+
+    <div id="create">
+        <p>Create Your Key</p>
+        <input placeholder="Your pass key" type="text" id="newpasskey">
+        <button onclick="createiv()">Enter</button>
+    </div>
+
+    <div id="apps">
+        <!-- <div class="app">
+            <img src="https://th.bing.com/th/id/R.70ecfdd862bdc3fdbf5715085812f49e?rik=fDJPk4oWTEisvw&pid=ImgRaw&r=0">
+            <div class="content">
+                <h4 class="appName">App Name</h4>
+                <span onclick="menu2(0)" class="editDots"><i class="fa-solid fa-ellipsis"></i></span>
+                <div class="password">
+                    <input type="password" class="password2 PassContent" value="" readonly>
+                    <button onclick="PassCopy(0)">Copy</button>
+                    <span onclick="eyeFun(0)"><i class="fa-regular fa-eye"></i></span>
+                    <span onclick="eyeFun(0)"><i class="fa-regular fa-eye-slash"></i></span>
+                </div>
+                <div class="editMenu">
+                    <span onclick="xmarkspanFun(0)"><i class="fa-solid fa-pen-to-square"></i> Edit</span>
+                    <span onclick="RemoveApp(0)"><i class="fa-solid fa-trash"></i> Remove</span>
+                </div>
+                <div class="editpassword">
+                    <span onclick="xmarkspanFun(0)"><i class="fa-solid fa-xmark"></i></span>
+                    <input type="password" class="EdotedPassword">
+                    <button onclick="Editpassword(0)">Enter</button>
+                </div>
+            </div>
+        </div> -->
+        
+    </div>
+
+    <div id="uplode">
+        <span onclick="uplodeSH()"><i class="fa-solid fa-xmark" onclick="close()"></i></span>
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <h3>Upload your password file</h3>
+        <input type="file" id="thePassFile" name="Password">
+        <input placeholder="Plass key 1" type="password" name="" id="enkey">
+        <input placeholder="Pass key 2" type="password" name="" id="enkeyIV">
+        <button onclick="ok()">OK</button>
+    </div>
+
+    <div id="settings">
+        <span onclick="settingsSH()"><i class="fa-solid fa-xmark" onclick="close()"></i></span>
+        <i class="fa-solid fa-gear"></i>
+        <h3>Settings</h3>
+        <span><input onchange="localstorge()" type="checkbox" name="Save to local storge" id="passwordlocalstorge"> Save your password to your local storge</span>
+    </div>
+
+    <div id="iv">
+        <span onclick="ivSH()"><i class="fa-solid fa-xmark"></i></span>
+        <h5>Your second PassKey is:</h5>
+        <h2>Dbb6srOk99JT7dli</h2>
+        <h4>Please save it</h4>
+        <button onclick="ivCopy()">Copy</button>
+    </div>
+
+    <div id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <footer>
+        <p>Made with 💖 by <b>Moaz Ahmad</b> (Moaz1126)</p>
+        <div>
+            <a href="https://discord.com/users/1064210185062719548" target="_blank"><i class="fa-brands fa-discord"></i></a>
+            <a href="https://about-moaz1126.web.app/" target="_blank"><i class="fa-solid fa-blog"></i></a>
+            <a href="https://github.com/moaz1126/CryptKeep/" target="_blank"><i class="fa-brands fa-github"></i></a>
+        </div>
+    </footer>
+    <script src="js/popup.js"></script>
+    <script src="js/system.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/passkey.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/desktop.js"></script>
+</body>
+</html>

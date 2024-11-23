@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- HTML Meta Tags -->
+    <title>Welcome CryptKeep</title>
+    <meta name="description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="CryptKeep" />
+    <meta itemprop="description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+    <meta itemprop="image" content="https://cryptkeep-web.web.app/img/cover.png" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://cryptkeep-web.web.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CryptKeep" />
+    <meta property="og:description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+    <meta property="og:image" content="https://cryptkeep-web.web.app/img/cover.png" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CryptKeep" />
+    <meta name="twitter:description" content="CryptKeep the easiest and most secure way to store your passwords, it&#039;s free and open-source." />
+    <meta name="twitter:image" content="https://cryptkeep-web.web.app/img/cover.png" />
+
+    <link rel="icon" type="image/x-icon" href="/img/icon2.png">
+
+    <!-- Meta Tags Generated via https://heymeta.com -->
+
+    <link rel="stylesheet" href="../fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="../css/background.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/introduction.css">
+    <link rel="stylesheet" href="../css/desktop.css">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="circle"></div>
+    <nav>
+        <h1><i class="fa-solid fa-key"></i> CryptKeep</h1>
+        <div id="Menus">
+            <a href="#"><i class="fa-solid fa-upload"></i> Uplode</a>
+            <a href="#"><i class="fa-solid fa-download"></i> Download</a>
+            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+        <span id="Dots" onclick="menu()"><i class="fa-solid fa-ellipsis"></i></span>
+    </nav>
+    <main>
+        <img src="../img/icon.png" id="img" alt="icon">
+        <video id="video" controls> <source src="../video/CryptKeep Intro.mp4" type="video/mp4"> Your browser does not support the video tag. </video>
+        <h3>Welcome To CryptKeep</h3>
+        <h5>(Safeguard your digital kingdom)</h5>
+        <div>
+            <span class="regular"><i class="fa-regular fa-circle"></i></span>
+            <span class="solid"><i class="fa-solid fa-circle"></i></span>
+            <span class="regular"><i class="fa-regular fa-circle"></i></span>
+            <span class="solid"><i class="fa-solid fa-circle"></i></span>
+            <span class="regular"><i class="fa-regular fa-circle"></i></span>
+            <span class="solid"><i class="fa-solid fa-circle"></i></span>
+        </div>
+        <p id="textP"></p>
+        <button id="button" onclick="next()">Next <i class="fa-regular fa-circle-right"></i></button>
+    </main>
+    <footer>
+        <p>Made with 💖 by <b>Moaz Ahmad</b> (Moaz1126)</p>
+        <div>
+            <a href="#" onclick="openLink(1)"><i class="fa-brands fa-discord"></i></a>
+            <a href="#" onclick="openLink(2)"><i class="fa-solid fa-blog"></i></a>
+            <a href="#" onclick="openLink(3)"><i class="fa-brands fa-github"></i></a>
+        </div>
+    </footer>
+    <script src="../js/background.js"></script>
+    <script src="../js/popup.js"></script>
+    <script src="../js/introduction.js"></script>
+    <script src="../js/desktop.js"></script>
+</body>
+</html>

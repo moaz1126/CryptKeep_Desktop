@@ -1,0 +1,75 @@
+main {
+    width: 400px;
+    height: 450px;
+    background-color: #FDCA95ff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    border: 3px solid white;
+}
+main img {
+    width: 250px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+main h3, main h5 {
+    text-align: center;
+    margin-bottom: 5px;
+}
+main p {
+    padding: 13px;
+}
+main div {
+    position: absolute;
+    right: 50%;
+    transform: translateX(50%);
+    margin-top: 3px;
+}
+main .solid {
+    display: none;
+}
+main p {
+    margin-top: 16px;
+}
+main button {
+    width: 100%;
+    border: none;
+    padding: 15px;
+    position: absolute;
+    bottom: 0px;
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    transition: 0.3s;
+    border-radius: 0px 0px 3px 3px;
+}
+main button:hover {
+    background-color: var(--main-color3);
+    color: white;
+}
+footer {
+    position: fixed;
+    bottom: 0px;
+}
+
+
+@media only screen and (max-width: 430px) {
+    main {
+        width: 340px;
+    }
+}
+#video {
+    display: none;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    width: 95%;
+    margin-bottom: 20px;
+}
+/* img {
+    display: none;
+} */

@@ -1,0 +1,73 @@
+#dropZone {
+    width: 90%;
+    height: 90%;
+    border: 2px dashed #ccc;
+    text-align: center;
+    line-height: 200px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background-color: #eeeeee77;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#downloadState {
+    width: 90%;
+    height: 90%;
+    border: 2px dashed #00ff00;
+    text-align: center;
+    line-height: 200px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background-color: #ffffffec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#downloadState p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#span1 {
+    display: block;
+    width: 50%;
+    height: 25px;
+    /* border-radius: 50px; */
+    position: relative;
+    background-color: #eee;
+}
+#span2 {
+    display: block;
+    width: 0%;
+    height: 25px;
+    /* border-radius: 100px; */
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    transition: 0.3s;
+    background-color: #00ff00;
+}
+.passkeyEye {
+    position: absolute;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30px;
+    transition: 0.3s;
+}
+
+#settings {
+    height: 258px;
+}
+footer {
+    display: none;
+}

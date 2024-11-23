@@ -1,0 +1,57 @@
+{
+  "name": "cryptkeep",
+  "productName": "cryptkeep",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\"",
+    "build": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moaz1126/CryptKeep_Desktop.git"
+  },
+  "keywords": [
+    "Passwords",
+    "CryptKeep"
+  ],
+  "devDependencies": {
+    "@electron-forge/cli": "^7.5.0",
+    "@electron-forge/maker-deb": "^7.5.0",
+    "@electron-forge/maker-rpm": "^7.5.0",
+    "@electron-forge/maker-squirrel": "^7.5.0",
+    "@electron-forge/maker-zip": "^7.5.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
+    "@electron-forge/plugin-fuses": "^7.5.0",
+    "@electron/fuses": "^1.8.0",
+    "electron": "33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "author": "Moaz Ahmad",
+  "license": "ISC",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.3.9",
+    "fs": "^0.0.1-security",
+    "keytar": "^7.9.0",
+    "os": "^0.1.2",
+    "serialport": "^12.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/moaz1126/CryptKeep_Desktop/issues"
+  },
+  "homepage": "https://cryptkeep-web.web.app/Desktop/",
+  "build": {
+    "appId": "com.moaz1126.cryptkeep",
+    "productName": "CryptKeep",
+    "win": {
+      "target": "nsis",
+      "icon": "src/icon2.ico"
+    }
+  }
+}
