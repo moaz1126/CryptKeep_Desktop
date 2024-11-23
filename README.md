@@ -7,8 +7,8 @@
 
 ## App Link
 
-[cryptkeep-web.web.app](https://cryptkeep-web.web.app/)
-[Main Github Repositories]([https://cryptkeep-web.web.app/](https://github.com/moaz1126/CryptKeep))
+- [cryptkeep-web.web.app](https://cryptkeep-web.web.app/)
+- [Main Github Repositories](https://github.com/moaz1126/CryptKeep/)
 
 
 ### Authors
