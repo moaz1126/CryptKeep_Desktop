@@ -324,7 +324,7 @@ function saveToLocal() {
 // Auto Update
 const feedURLWeb = 'https://cryptkeep-web.web.app/Desktop/releases.json';
 let feedURLData;
-let appVersion =  '1.0.1'
+let appVersion =  '1.0.2'
 async function feedURLFun() {
     await fetch(feedURLWeb)
         .then(response => {
