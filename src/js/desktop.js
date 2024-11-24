@@ -13,14 +13,24 @@ let uplodeDiv = document.querySelector('#uplode');
 let uplodeDivH3 = document.querySelector('#uplode h3');
 
 
-let EnPasskeyCode = 'Your En Passkey'
+let EnPasskeyCode = ''
 let CPU_HArdwareNum = '';
 ipcRenderer.send('get-cpu-serial');
 ipcRenderer.on('cpu-num', (event, message) => {
     CPU_HArdwareNum = message;
     WhenCPULoad()
     if(message == '') {
-        alert('Failed to get your CPU id, passkey will not be saved')
+        alert('Failed to get your Hardware id, passkey will not be saved')
+    }
+
+});
+
+ipcRenderer.send('---------------');
+ipcRenderer.on('---------', (event, message) => {
+    EnPasskeyCode = message;
+    WhenCPULoad()
+    if(message == '') {
+        alert('--------------------')
     }
 
 });
@@ -112,7 +122,7 @@ async function ok() {
             uplodeDivH3.textContent = 'Upload your password file' + `<span class="passkeyEye" onclick="showPasskey()"><i class="fa-regular fa-eye"></i></span>`
 
 
-            if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '') {
+            if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '' && EnPasskeyCode != '') {
                 // Encript passkeys
                 let encryptPasskey1 = await encrypt(passkey, EnPasskeyCode, CPU_HArdwareNum);
                 let encryptPasskey2 = await encrypt(passkey2, EnPasskeyCode, CPU_HArdwareNum);
@@ -184,8 +194,8 @@ ipcRenderer.on('read-json-reply', async (event, data) => {
   } else {
     const jsonObject = JSON.parse(data);
     if(jsonObject.passkey1 != undefined && jsonObject.passkey1 != 'undefined' && jsonObject.passkey2 != undefined && jsonObject.passkey2 != 'undefined') {
-        let DePasskey1 = await decrypt(jsonObject.passkey1, EnPasskeyCode, CPU_HArdwareNum);
-        let DePasskey2 = await decrypt(jsonObject.passkey2, EnPasskeyCode, CPU_HArdwareNum);
+        let DePasskey1 = await decrypt(jsonObject.passkey1, EnPasskeyCode, CPU_HArdwareNum, true);
+        let DePasskey2 = await decrypt(jsonObject.passkey2, EnPasskeyCode, CPU_HArdwareNum, true);
         if(DePasskey1 != 'Err' && DePasskey2 != 'Err') {
             passkeyEl.value = DePasskey1
             passkeyElVI.value =  DePasskey2
@@ -240,7 +250,7 @@ window.addEventListener('load', async function() {
 });
 
 function WhenCPULoad() {
-    if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '') {
+    if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '' && EnPasskeyCode != '') {
         let checkbox2 = document.querySelector('#passkeySvae');
         if(window.localStorage.getItem('SavePasskey') == 'true') {
             checkbox2.checked = true;
@@ -324,7 +334,7 @@ function saveToLocal() {
 // Auto Update
 const feedURLWeb = 'https://cryptkeep-web.web.app/Desktop/releases.json';
 let feedURLData;
-let appVersion =  '1.0.2'
+let appVersion =  '1.1.0'
 async function feedURLFun() {
     await fetch(feedURLWeb)
         .then(response => {
@@ -430,7 +440,7 @@ async function createiv() {
     
         createMenu.style.display = 'none'
         ivSH(criptoiv);
-        if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '') {
+        if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '' && EnPasskeyCode != '') {
             // Encript passkeys
             let encryptPasskey1 = await encrypt(passkey, EnPasskeyCode, CPU_HArdwareNum);
             let encryptPasskey2 = await encrypt(passkey2, EnPasskeyCode, CPU_HArdwareNum);
