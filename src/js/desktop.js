@@ -13,7 +13,7 @@ let uplodeDiv = document.querySelector('#uplode');
 let uplodeDivH3 = document.querySelector('#uplode h3');
 
 
-let EnPasskeyCode = 'Your Passkey'
+let EnPasskeyCode = 'You En Key'
 let CPU_HArdwareNum = '';
 ipcRenderer.send('get-cpu-serial');
 ipcRenderer.on('cpu-num', (event, message) => {
@@ -109,7 +109,7 @@ async function ok() {
             faCloud.style.display = 'block';
             uplodeDiv.style.width = '300px'
             uplodeDiv.style.height = "430px"
-            uplodeDivH3.textContent = 'Upload your password file'
+            uplodeDivH3.textContent = 'Upload your password file' + `<span class="passkeyEye" onclick="showPasskey()"><i class="fa-regular fa-eye"></i></span>`
 
 
             if(window.localStorage.getItem('SavePasskey') == 'true' && CPU_HArdwareNum != '') {
@@ -138,7 +138,19 @@ async function ok() {
         faCloud.style.display = 'block';
         uplodeDiv.style.width = '300px'
         uplodeDiv.style.height = "430px"
-        uplodeDivH3.textContent = 'Upload your password file'
+        uplodeDivH3.textContent = 'Upload your password file' + `<span class="passkeyEye" onclick="showPasskey()"><i class="fa-regular fa-eye"></i></span>`
+    }
+}
+function uplodeSH() {
+    uplode = document.querySelector('#uplode');
+    if(uplode.style.display == 'flex') {
+        uplode.style.display = ''
+        faCloud.style.display = 'block';
+        uplodeDiv.style.width = '300px'
+        uplodeDiv.style.height = "430px"
+        uplodeDivH3.textContent = 'Upload your password file' + `<span class="passkeyEye" onclick="showPasskey()"><i class="fa-regular fa-eye"></i></span>`
+    } else {
+        uplode.style.display = 'flex'
     }
 }
 
@@ -312,7 +324,7 @@ function saveToLocal() {
 // Auto Update
 const feedURLWeb = 'https://cryptkeep-web.web.app/Desktop/releases.json';
 let feedURLData;
-let appVersion =  '1.0.0'
+let appVersion =  '1.0.1'
 async function feedURLFun() {
     await fetch(feedURLWeb)
         .then(response => {
