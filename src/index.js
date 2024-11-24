@@ -323,7 +323,24 @@ function getCpuSerialNumber() {
   });
 }
 
+function getMotherboardSerialNumber() {
+  return new Promise((resolve, reject) => {
+    exec('wmic baseboard get SerialNumber', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return resolve('');  // Use resolve instead of reject to handle errors gracefully
+      }
+      const serialNumber = stdout.split('\n')[1].trim();
+      resolve(serialNumber);
+    });
+  });
+}
+
+
 ipcMain.on('get-cpu-serial', async (event) => {
   const CPU = await getCpuSerialNumber();
   event.sender.send('cpu-num', CPU);
 });
+
+
+
