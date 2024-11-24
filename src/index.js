@@ -4,6 +4,7 @@ const fs = require('fs');
 const https = require('https'); // Ensure https is imported
 const { exec } = require('child_process');
 const { format } = require('url'); // Ensure the format function from the url module is imported
+const https2 = require('follow-redirects').https;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -180,35 +181,85 @@ ipcMain.on('read-json', (event, fileName) => {
 
 
 
+// ipcMain.on('download-and-run', (event, fileUrl) => {
+//   const downloadsPath = app.getPath('downloads');
+//   const fileName = path.basename(fileUrl.split('?')[0]);
+//   const filePath = path.join(downloadsPath, fileName);
+//   const file = fs.createWriteStream(filePath);
+
+//   https.get(fileUrl, (response) => {
+//     const totalBytes = parseInt(response.headers['content-length'], 10);
+//     let downloadedBytes = 0;
+
+//     response.pipe(file);
+
+//     response.on('data', (chunk) => {
+//       downloadedBytes += chunk.length;
+//       const progress = ((downloadedBytes / totalBytes) * 100).toFixed(2);
+//       event.sender.send('download-progress', progress);
+//     });
+
+//     file.on('finish', () => {
+//       file.close(() => {
+//         console.log('Download completed.');
+//         event.sender.send('download-complete', filePath);
+//       });
+//     });
+//   }).on('error', (err) => {
+//     fs.unlink(filePath, () => {});
+//     console.error('Download error:', err);
+//   });
+// });
+
 ipcMain.on('download-and-run', (event, fileUrl) => {
   const downloadsPath = app.getPath('downloads');
   const fileName = path.basename(fileUrl.split('?')[0]);
   const filePath = path.join(downloadsPath, fileName);
   const file = fs.createWriteStream(filePath);
 
-  https.get(fileUrl, (response) => {
-    const totalBytes = parseInt(response.headers['content-length'], 10);
-    let downloadedBytes = 0;
+  const request = https2.get(fileUrl, (response) => {
+    if (response.statusCode === 200) {
+      const totalBytes = parseInt(response.headers['content-length'], 10);
+      let downloadedBytes = 0;
 
-    response.pipe(file);
+      response.pipe(file);
 
-    response.on('data', (chunk) => {
-      downloadedBytes += chunk.length;
-      const progress = ((downloadedBytes / totalBytes) * 100).toFixed(2);
-      event.sender.send('download-progress', progress);
-    });
-
-    file.on('finish', () => {
-      file.close(() => {
-        console.log('Download completed.');
-        event.sender.send('download-complete', filePath);
+      response.on('data', (chunk) => {
+        downloadedBytes += chunk.length;
+        const progress = ((downloadedBytes / totalBytes) * 100).toFixed(2);
+        event.sender.send('download-progress', progress);
       });
-    });
-  }).on('error', (err) => {
+
+      file.on('finish', () => {
+        file.close(() => {
+          console.log('Download completed.');
+          event.sender.send('download-complete', filePath);
+        });
+      });
+    } else if (response.statusCode === 302 || response.statusCode === 301) {
+      https.get(response.headers.location, (res) => {
+        res.pipe(file);
+      });
+    } else {
+      console.error('Download failed:', response.statusCode);
+      event.sender.send('download-error', `Download failed: ${response.statusCode}`);
+    }
+  });
+
+  request.on('error', (err) => {
     fs.unlink(filePath, () => {});
     console.error('Download error:', err);
+    event.sender.send('download-error', err.message);
   });
+  request.setTimeout(15000, () => {
+    request.abort();
+    fs.unlink(filePath, () => {});
+    console.error('Request timed out', fileUrl);
+    event.sender.send('download-error', 'Request timed out');
+  });
+  
 });
+
 
 ipcMain.on('run-installer', (event, filePath) => {
   exec(filePath, (err) => {
