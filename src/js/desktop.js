@@ -13,7 +13,7 @@ let uplodeDiv = document.querySelector('#uplode');
 let uplodeDivH3 = document.querySelector('#uplode h3');
 
 
-let EnPasskeyCode = 'You En Key'
+let EnPasskeyCode = 'Your En Passkey'
 let CPU_HArdwareNum = '';
 ipcRenderer.send('get-cpu-serial');
 ipcRenderer.on('cpu-num', (event, message) => {
@@ -359,7 +359,7 @@ async function feedURLFun() {
             if (userResponse) {
                 console.log('yes');
                 // Add an element using innerHTML
-                document.body.innerHTML += `
+                document.querySelector('nav').innerHTML += `
                     <div id="downloadState">
                         <span id="span1">
                             <span id="span2"></span>
