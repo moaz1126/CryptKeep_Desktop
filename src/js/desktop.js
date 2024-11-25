@@ -7,6 +7,54 @@ document.querySelector('#settings').innerHTML = document.querySelector('#setting
 // document.querySelector('#settings').style.height = '250px'
 // document.querySelector('footer').style.display = 'none'
 document.querySelector('#uplode h3').innerHTML = document.querySelector('#uplode h3').innerHTML + `<span class="passkeyEye" onclick="showPasskey()"><i class="fa-regular fa-eye"></i></span>`
+function addNotifecationElement() {
+    const notifications = document.createElement('div');
+    notifications.id = 'notifications'
+    document.body.appendChild(notifications);
+}
+addNotifecationElement();
+function Notifecation(name, TF) {
+    let notificationsDiv = document.querySelector('#notifications');
+    const NewNotification = document.createElement('div');
+    NewNotification.classList.add('notification');
+    if(TF) {
+        NewNotification.innerHTML = `<i class="fa-solid fa-check"></i> <span>${name}</span>`;
+        NewNotification.style.background = '#0FFF50'
+    } else {
+        NewNotification.innerHTML = `<i class="fa-solid fa-xmark"></i> <span>${name}</span>`;
+        NewNotification.style.background = '#FF3131'
+    }
+    notificationsDiv.appendChild(NewNotification);
+
+    setTimeout(() => {
+        // Add fade-out class
+        NewNotification.classList.add('slideOutKeyFrame');
+        
+        // Remove the element after the fade-out animation
+        setTimeout(() => {
+            notificationsDiv.removeChild(NewNotification);
+        }, 1000); // 1 second for the fade-out animation
+    }, 5000); // Wait for 5 seconds before starting the fade-out
+}
+
+// Copy Fun Uplode
+function PassCopy(e) {
+    password = document.querySelectorAll('.password2')
+    let val = password[e].value;
+    navigator.clipboard.writeText(val).then(function() {
+        Notifecation('Copied to clipboard!', true);
+    }).catch(function(error) {
+        Notifecation('Copy failed', false)
+    });
+}
+function ivCopy() {
+    navigator.clipboard.writeText(ivH2.textContent).then(function() {
+        Notifecation('Copied to clipboard!' , true);
+    }).catch(function(error) {
+        Notifecation('Copy failed', false)
+    });
+}
+// Done
 
 let faCloud = document.querySelector("#thePassFile");
 let uplodeDiv = document.querySelector('#uplode');
@@ -20,17 +68,17 @@ ipcRenderer.on('cpu-num', (event, message) => {
     CPU_HArdwareNum = message;
     WhenCPULoad()
     if(message == '') {
-        alert('Failed to get your Hardware id, passkey will not be saved')
+        Notifecation('Failed to get your Hardware id, passkey will not be saved', false)
     }
 
 });
 
-ipcRenderer.send('---------------');
-ipcRenderer.on('---------', (event, message) => {
+ipcRenderer.send('--------------');
+ipcRenderer.on('------------', (event, message) => {
     EnPasskeyCode = message;
     WhenCPULoad()
     if(message == '') {
-        alert('--------------------')
+        Notifecation('-----------------', false)
     }
 
 });
@@ -104,7 +152,7 @@ async function ok() {
             passkeyElVI.value = "";
             saveToLocal();
         } else {
-            alert("please type your passkey and passkey 2")
+            Notifecation("please type your passkey and passkey 2", false)
         }
     } else if(droped) {
         if(passkeyEl.value.length != 0 && passkeyElVI.value.length != 0) {
@@ -134,7 +182,7 @@ async function ok() {
 
             saveToLocal();
         } else {
-            alert("please type your passkey and passkey 2")
+            Notifecation("please type your passkey and passkey 2", false)
         }
     } else if(FileContent && passkeyEl.value.length != 0 && passkeyElVI.value.length != 0) {
         uplodeSH()
@@ -200,12 +248,52 @@ ipcRenderer.on('read-json-reply', async (event, data) => {
             passkeyEl.value = DePasskey1
             passkeyElVI.value =  DePasskey2
         }
+    } else if(jsonObject.passwordLocal != undefined && jsonObject.passwordLocal != 'undefined' && jsonObject.passkeyLocal != undefined && jsonObject.passkeyLocal != 'undefined') {
+        if(jsonObject.passkeyLocal == true) {
+            if(jsonObject.passwordLocal == true) {
+                LocalStorgeSave(true, true);
+            } else if(jsonObject.passwordLocal == false) {
+                LocalStorgeSave(false, true);
+            }
+        } else if(jsonObject.passwordLocal == true) {
+            LocalStorgeSave(true, false);
+        }
     } else {
         FileContent = jsonObject;
     }
   }
 });
 
+let passwordTFV = false;
+let passkeyTFV = false
+
+function LocalStorgeSave(passwordTF, passkeyTF) {
+    let checkbox = document.querySelector('#passwordlocalstorge');
+    passkeyTFV = passkeyTF
+    passwordTFV = passwordTFV
+    if(passwordTF) {
+        checkbox.checked = true;
+        window.localStorage.setItem('SaveToLocalStorge', 'true')
+        readJsonFile('passwords.json')
+    }
+    if(passkeyTF) {
+        let checkbox2 = document.querySelector('#passkeySvae');
+        window.localStorage.setItem('SavePasskey', 'true')
+            checkbox2.checked = true;
+            if(CPU_HArdwareNum != '' && EnPasskeyCode != '') {
+                readJsonFile('passkey.json')
+            }
+        
+        // // Encript passkeys
+        // let encryptPasskey1 = await encrypt(passkey, 'EnPasskey', );
+        // let encryptPasskey2 = await encrypt(passkey2, 'EnPasskey', );
+
+        // let EnPasskeys = {passkey1: encryptPasskey1, passkey2: encryptPasskey2}
+        
+        // saveJsonObject(EnPasskeys, 'passkey.json')
+
+    } 
+}
 
 function openLink(e) {
     // need to del links and add fun
@@ -235,10 +323,9 @@ window.addEventListener('load', async function() {
     createSH();
     let checkbox = document.querySelector('#passwordlocalstorge');
     if(window.localStorage.getItem('SaveToLocalStorge') == 'true') {
+        passwordTFV = true;
         checkbox.checked = true;
         readJsonFile('passwords.json')
-    } else {
-        checkbox.checked = false
     }
 
     if(window.localStorage.getItem('FristTime')) {
@@ -246,7 +333,7 @@ window.addEventListener('load', async function() {
     } else {
         ipcRenderer.send('open-new-window', 'Other/introduction.html');
     }
-
+    readJsonFile('localstorge.json')
 });
 
 function WhenCPULoad() {
@@ -255,9 +342,8 @@ function WhenCPULoad() {
         if(window.localStorage.getItem('SavePasskey') == 'true') {
             checkbox2.checked = true;
             readJsonFile('passkey.json')
-        } else {
-            checkbox2.checked = false
-        }
+            passkeyTFV = true;
+        } 
         // // Encript passkeys
         // let encryptPasskey1 = await encrypt(passkey, 'EnPasskey', );
         // let encryptPasskey2 = await encrypt(passkey2, 'EnPasskey', );
@@ -297,10 +383,10 @@ async function decrypt(encryptedData, passkey, iv, isPasskey) {
     } catch (error) {
         console.error('Decryption failed:', error);
         if(isPasskey) {
-            alert('Failed to load your saved passkey')
+            Notifecation('Failed to load your saved passkey', false)
             return 'Err'
         } else {
-            alert('Wrong passkey')
+            Notifecation('Wrong passkey', false)
             window.location.reload();
         }
     }
@@ -315,12 +401,19 @@ function localstorge() {
     let checkbox = document.querySelector('#passwordlocalstorge');
     if (checkbox.checked) {
         window.localStorage.setItem('SaveToLocalStorge', true)
-        saveJsonObject(FileContent, 'passwords.json')
+        if(FileContent != undefined && FileContent != 'undefined') {
+            saveToLocal();
+        }
+        
+        passwordTFV = true;
         alert('Now you dont need to upload the file, Just enter your passkey and second passkey')
     } else {
         window.localStorage.setItem('SaveToLocalStorge', false)
         deleteJsonFile('passwords.json')
+        passwordTFV = false;
     }
+    let obj = {passkeyLocal: passkeyTFV, passwordLocal: passwordTFV}
+    saveJsonObject(obj, 'localstorge.json');
 }
 
 function saveToLocal() {
@@ -334,7 +427,7 @@ function saveToLocal() {
 // Auto Update
 const feedURLWeb = 'https://cryptkeep-web.web.app/Desktop/releases.json';
 let feedURLData;
-let appVersion =  '1.1.0'
+let appVersion =  '0.0.0'
 async function feedURLFun() {
     await fetch(feedURLWeb)
         .then(response => {
@@ -405,8 +498,16 @@ ipcRenderer.on('download-complete', (event, filePath) => {
         downloadState.remove()
     }
 });
+
+ipcRenderer.send('get-app-version');
+
+ipcRenderer.on('app-version', (event, version) => {
+    appVersion = version;
+    feedURLFun();
+});
+
 // Call the function
-feedURLFun();
+
 
 
 async function passkeySaveFun() {
@@ -422,11 +523,15 @@ async function passkeySaveFun() {
             
             saveJsonObject(EnPasskeys, 'passkey.json')
         }
+        passkeyTFV = true;
         alert('Now your passkey will load with the app')
     } else {
         window.localStorage.setItem('SavePasskey', false)
         deleteJsonFile('passkey.json')
+        passkeyTFV = false;
     }
+    let obj = {passkeyLocal: passkeyTFV, passwordLocal: passwordTFV}
+    saveJsonObject(obj, 'localstorge.json');
 }
 
 async function createiv() {
@@ -451,6 +556,6 @@ async function createiv() {
         }
         onblur();
     } else {
-        alert('Enter passkey')
+        Notifecation('Enter passkey', false)
     }
 }
