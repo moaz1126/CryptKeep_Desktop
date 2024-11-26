@@ -74,11 +74,11 @@ ipcRenderer.on('cpu-num', (event, message) => {
 });
 
 ipcRenderer.send('--------------');
-ipcRenderer.on('------------', (event, message) => {
+ipcRenderer.on('-------------', (event, message) => {
     EnPasskeyCode = message;
     WhenCPULoad()
     if(message == '') {
-        Notifecation('-----------------', false)
+        Notifecation('---------------------', false)
     }
 
 });
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
         reader.readAsText(file);
       } else {
-        alert('Please drop a JSON file.');
+        Notifecation('Please drop a JSON file.', false);
       }
     });
 });
@@ -218,8 +218,11 @@ function saveJsonObject(jsonObject, fileName) {
   ipcRenderer.send('save-json', jsonObject, fileName);
 }
 
-ipcRenderer.on('save-json-reply', (event, message) => {
-  console.log(message);
+ipcRenderer.on('save-json-reply', (event, message, name) => {
+    console.log(message);
+  if(message.startsWith('Failed')) {
+    Notifecation('Failed to save ' + name, false)
+  }
 });
 
 // Function to delete the JSON file
@@ -227,8 +230,11 @@ function deleteJsonFile(fileName) {
   ipcRenderer.send('delete-json', fileName);
 }
 
-ipcRenderer.on('delete-json-reply', (event, message) => {
-  console.log(message);
+ipcRenderer.on('delete-json-reply', (event, message, name) => {
+    console.log(message);
+    if(message.startsWith('Failed')) {
+        Notifecation('Failed to delete ' + name, false)
+    }
 });
 
 // Function to read the JSON file
@@ -236,9 +242,10 @@ function readJsonFile(fileName) {
   ipcRenderer.send('read-json', fileName);
 }
 
-ipcRenderer.on('read-json-reply', async (event, data) => {
+ipcRenderer.on('read-json-reply', async (event, data, name) => {
   if (data.startsWith('Failed')) {
     console.error(data);
+    Notifecation(`Failed to read ${name}`, false)
   } else {
     const jsonObject = JSON.parse(data);
     if(jsonObject.passkey1 != undefined && jsonObject.passkey1 != 'undefined' && jsonObject.passkey2 != undefined && jsonObject.passkey2 != 'undefined') {
@@ -386,7 +393,7 @@ async function decrypt(encryptedData, passkey, iv, isPasskey) {
             Notifecation('Failed to load your saved passkey', false)
             return 'Err'
         } else {
-            Notifecation('Wrong passkey', false)
+            alert('Wrong passkey')
             window.location.reload();
         }
     }
