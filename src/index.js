@@ -141,7 +141,7 @@ ipcMain.on('save-json', (event, jsonObject, fileName) => {
 
     fs.writeFile(filePath, JSON.stringify(jsonObject, null, 2), (err) => {
       if (err) {
-        event.reply('save-json-reply', 'Failed to save file');
+        event.reply('save-json-reply', 'Failed to save file', fileName);
       } else {
         event.reply('save-json-reply', `File has been saved to ${filePath}`);
       }
@@ -157,7 +157,7 @@ ipcMain.on('delete-json', (event, fileName) => {
 
   fs.unlink(filePath, (err) => {
     if (err) {
-      event.reply('delete-json-reply', `Failed to delete file: ${filePath}`);
+      event.reply('delete-json-reply', `Failed to delete file: ${filePath}`, fileName);
     } else {
       event.reply('delete-json-reply', `File deleted: ${filePath}`);
     }
@@ -172,7 +172,7 @@ ipcMain.on('read-json', (event, fileName) => {
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      event.reply('read-json-reply', `Failed to read file: ${filePath}`);
+      event.reply('read-json-reply', `Failed to read file: ${filePath}`, fileName);
     } else {
       event.reply('read-json-reply', data);
     }
@@ -324,16 +324,7 @@ function getCpuSerialNumber() {
 }
 
 function getMotherboardSerialNumber() {
-  return new Promise((resolve, reject) => {
-    exec('wmic baseboard get SerialNumber', (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return resolve('');  // Use resolve instead of reject to handle errors gracefully
-      }
-      const serialNumber = stdout.split('\n')[1].trim();
-      resolve(serialNumber);
-    });
-  });
+  
 }
 
 
@@ -341,6 +332,12 @@ ipcMain.on('get-cpu-serial', async (event) => {
   const CPU = await getCpuSerialNumber();
   event.sender.send('cpu-num', CPU);
 });
+ipcMain.on('-------------', async (event) => {
+  // const ----- = await getNumber();
+  // event.sender.send('---------', -----);
+});
 
-
-
+ipcMain.on('get-app-version', (event) => {
+    const appVersion = app.getVersion();
+    event.sender.send('app-version', appVersion);
+});
